@@ -450,21 +450,32 @@ const versionControl = new VersionControl();
 
 // ==================== APPLICATION CORE ====================
 
-// Application Test Hooks for automation
-window.__app = {
-    login: (username, password) => {
-        document.getElementById('username').value = username;
-        document.getElementById('password').value = password;
-        handleLogin();
-    },
-    commit: (message) => versionControl.commit(message),
-    createBranch: (name, parent) => versionControl.createBranch(name, parent, currentUser.username, new Date()),
-    switchBranch: (name) => versionControl.switchBranch(name),
-    getCurrentUser: () => currentUser,
-    getCurrentBranch: () => versionControl.currentBranch,
-    getChangesCount: () => versionControl.pendingChanges
-};
+// Make sure these don't make server calls in demo mode
+function handleLogin() {
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
+    
+    if (!username || !password) {
+        alert('Please enter both username and password.');
+        return;
+    }
 
+    // Find user in demo data
+    const user = appData.users.find(u => u.username === username);
+    
+    // Demo authentication - password is 'admin123' for all users
+    if (user && password === 'admin123') {
+        currentUser = user;
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        if (user.defaultPassword) {
+            showChangePasswordModal();
+        } else {
+            showMainApp();
+        }
+    } else {
+        alert('Invalid credentials. Use any username (admin, manager, editor, viewer) with password "admin123"');
+    }
+}
 function initApp() {
     console.log('Initializing application...');
     
