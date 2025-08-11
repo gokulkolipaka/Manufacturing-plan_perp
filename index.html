@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PharmaCorp Manufacturing Planning System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="login-page">
+        <div class="login-container">
+            <div class="login-header">
+                <img id="companyLogo" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTAwIDQwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iNDAiIGZpbGw9IiMyMTgwNjEiLz48dGV4dCB4PSI1MCIgeT0iMjUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlBoYXJtYUNvcnA8L3RleHQ+PC9zdmc+" alt="Company Logo">
+                <h1 id="companyName">PharmaCorp Manufacturing</h1>
+                <p>Planning System Login</p>
+            </div>
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" id="username" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" id="password" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn--primary btn--full-width">Login</button>
+                <div class="login-options">
+                    <a href="#" onclick="showSignup()">New user? Sign up</a>
+                    <a href="#" onclick="showForgotPassword()">Forgot Password?</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signupModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Sign Up</h2>
+                <button class="modal-close" onclick="hideSignup()">&times;</button>
+            </div>
+            <form id="signupForm">
+                <div class="form-group">
+                    <label for="signupUsername" class="form-label">Username</label>
+                    <input type="text" id="signupUsername" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail" class="form-label">Email</label>
+                    <input type="email" id="signupEmail" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword" class="form-label">Password</label>
+                    <input type="password" id="signupPassword" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword" class="form-label">Confirm Password</label>
+                    <input type="password" id="confirmPassword" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn--primary btn--full-width">Sign Up</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Change Password Modal -->
+    <div id="changePasswordModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Change Default Password</h2>
+            </div>
+            <form id="changePasswordForm">
+                <p>For security reasons, please change your default password.</p>
+                <div class="form-group">
+                    <label for="newPassword" class="form-label">New Password</label>
+                    <input type="password" id="newPassword" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmNewPassword" class="form-label">Confirm New Password</label>
+                    <input type="password" id="confirmNewPassword" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn--primary btn--full-width">Update Password</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="mainApp" class="main-app hidden">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <img id="appLogo" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTAwIDQwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iNDAiIGZpbGw9IiMyMTgwNjEiLz48dGV4dCB4PSI1MCIgeT0iMjUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlBoYXJtYUNvcnA8L3RleHQ+PC9zdmc+" alt="Company Logo">
+                    <h1 id="appCompanyName">PharmaCorp Manufacturing</h1>
+                </div>
+                <div class="header-center">
+                    <div class="version-control-bar">
+                        <div class="version-info">
+                            <span class="branch-indicator">🌿 Branch: <strong id="currentBranch">main</strong></span>
+                            <span class="changes-indicator" id="changesIndicator">📝 <span id="changesCount">0</span> changes</span>
+                        </div>
+                        <div class="version-actions">
+                            <button class="btn btn--outline btn--sm" onclick="openVersionHistory()" title="Version History">📖 History</button>
+                            <button class="btn btn--outline btn--sm" onclick="openBranchManager()" title="Branch Management">🌿 Branches</button>
+                            <button class="btn btn--primary btn--sm" id="commitBtn" onclick="openCommitModal()" title="Commit Changes" disabled>💾 Commit</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="user-info">
+                        <span id="currentUser">Welcome, User</span>
+                        <span id="currentRole" class="status status--info">User</span>
+                    </div>
+                    <button class="btn btn--outline btn--sm" onclick="toggleTheme()" title="Toggle Theme">🌓</button>
+                    <button class="btn btn--secondary" onclick="logout()">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="nav-item" onclick="showPage('dashboard')" id="nav-dashboard">
+                <span>📊 Dashboard</span>
+            </div>
+            <div class="nav-item" onclick="showPage('calendar')" id="nav-calendar">
+                <span>📅 Production Calendar</span>
+            </div>
+            <div class="nav-item" onclick="showPage('materials')" id="nav-materials">
+                <span>📦 Materials</span>
+            </div>
+            <div class="nav-item" onclick="showPage('users')" id="nav-users">
+                <span>👥 Users</span>
+            </div>
+            <div class="nav-item" onclick="showPage('equipment')" id="nav-equipment">
+                <span>⚙️ Equipment</span>
+            </div>
+            <div class="nav-item" onclick="showPage('reports')" id="nav-reports">
+                <span>📈 Reports</span>
+            </div>
+            <div class="nav-item" onclick="showPage('audit')" id="nav-audit">
+                <span>📋 Audit Log</span>
+            </div>
+            <div class="nav-item" onclick="showPage('settings')" id="nav-settings">
+                <span>⚙️ Settings</span>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Page -->
+            <div id="dashboardPage" class="page">
+                <h2>Production Dashboard</h2>
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <h3>Today's Production</h3>
+                        <div class="stat-value" id="todayProduction">5 Batches</div>
+                        <div class="stat-change status--success">+2 from yesterday</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Active Equipment</h3>
+                        <div class="stat-value" id="activeEquipment">7 / 9</div>
+                        <div class="stat-change status--info">2 in maintenance</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Low Stock Items</h3>
+                        <div class="stat-value" id="lowStockItems">3</div>
+                        <div class="stat-change status--warning">Requires attention</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Pending Approvals</h3>
+                        <div class="stat-value" id="pendingApprovals">2</div>
+                        <div class="stat-change status--warning">Requires review</div>
+                    </div>
+                </div>
+                <div class="dashboard-charts">
+                    <div class="chart-container">
+                        <h3>Production Overview</h3>
+                        <div style="position: relative; height: 300px;">
+                            <canvas id="productionChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="alerts-panel">
+                        <h3>Alerts & Notifications</h3>
+                        <div id="alertsList" class="alerts-list">
+                            <div class="alert alert--warning">
+                                <strong>Low Stock:</strong> Magnesium Stearate below reorder level
+                            </div>
+                            <div class="alert alert--info">
+                                <strong>Maintenance:</strong> FBP-01 scheduled for maintenance tomorrow
+                            </div>
+                            <div class="alert alert--success">
+                                <strong>Completed:</strong> Batch Panta-CB-20 successfully completed
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Production Calendar Page -->
+            <div id="calendarPage" class="page hidden">
+                <div class="page-header">
+                    <h2>Production Calendar</h2>
+                    <div class="page-actions">
+                        <button class="btn btn--outline" onclick="exportData('csv')">Export CSV</button>
+                        <button class="btn btn--outline" onclick="exportData('json')">Export JSON</button>
+                        <button class="btn btn--outline" onclick="importData()">Import Data</button>
+                        <button class="btn btn--primary" onclick="printCalendar()">Print</button>
+                    </div>
+                </div>
+                <div class="calendar-controls">
+                    <div class="month-navigation">
+                        <button class="btn btn--secondary" onclick="previousMonth()">&lt;</button>
+                        <span id="currentMonth">August 2024</span>
+                        <button class="btn btn--secondary" onclick="nextMonth()">&gt;</button>
+                    </div>
+                    <div class="activity-legend">
+                        <div class="legend-item">
+                            <span class="legend-color production"></span>
+                            <span>Production</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color maintenance"></span>
+                            <span>Maintenance</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color cleaning"></span>
+                            <span>Cleaning</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="calendar-container">
+                    <div class="calendar-grid" id="calendarGrid">
+                        <!-- Calendar will be generated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Materials Page -->
+            <div id="materialsPage" class="page hidden">
+                <h2>Material Management</h2>
+                <div class="materials-tabs">
+                    <button class="tab-btn active" onclick="showMaterialTab('api')">API</button>
+                    <button class="tab-btn" onclick="showMaterialTab('excipients')">Excipients</button>
+                    <button class="tab-btn" onclick="showMaterialTab('packaging')">Packaging</button>
+                    <button class="tab-btn" onclick="showMaterialTab('procurement')">Procurement Plan</button>
+                </div>
+                
+                <div id="apiTab" class="material-tab">
+                    <div class="tab-header">
+                        <h3>Active Pharmaceutical Ingredients (API)</h3>
+                        <button class="btn btn--primary" onclick="addMaterial('api')">Add API</button>
+                    </div>
+                    <div class="material-grid" id="apiGrid">
+                        <!-- API materials will be generated by JavaScript -->
+                    </div>
+                </div>
+
+                <div id="excipients" class="material-tab hidden">
+                    <div class="tab-header">
+                        <h3>Excipients</h3>
+                        <button class="btn btn--primary" onclick="addMaterial('excipients')">Add Excipient</button>
+                    </div>
+                    <div class="material-grid" id="excipientGrid">
+                        <!-- Excipients will be generated by JavaScript -->
+                    </div>
+                </div>
+
+                <div id="packagingTab" class="material-tab hidden">
+                    <div class="tab-header">
+                        <h3>Packaging Materials</h3>
+                        <button class="btn btn--primary" onclick="addMaterial('packaging')">Add Packaging</button>
+                    </div>
+                    <div class="material-grid" id="packagingGrid">
+                        <!-- Packaging materials will be generated by JavaScript -->
+                    </div>
+                </div>
+
+                <div id="procurementTab" class="material-tab hidden">
+                    <div class="tab-header">
+                        <h3>Procurement Planning</h3>
+                        <button class="btn btn--primary" onclick="generateProcurementPlan()">Generate Plan</button>
+                    </div>
+                    <div class="procurement-content" id="procurementContent">
+                        <!-- Procurement plan will be generated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Page -->
+            <div id="usersPage" class="page hidden">
+                <div class="page-header">
+                    <h2>User Management</h2>
+                    <button class="btn btn--primary" onclick="addUser()">Add User</button>
+                </div>
+                <div class="users-grid" id="usersGrid">
+                    <!-- Users will be generated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Equipment Page -->
+            <div id="equipmentPage" class="page hidden">
+                <div class="page-header">
+                    <h2>Equipment Management</h2>
+                    <button class="btn btn--primary" onclick="addEquipment()">Add Equipment</button>
+                </div>
+                <div class="equipment-grid" id="equipmentGrid">
+                    <!-- Equipment will be generated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Reports Page -->
+            <div id="reportsPage" class="page hidden">
+                <h2>Reports & Analytics</h2>
+                <div class="reports-container">
+                    <div class="report-section">
+                        <h3>Production Reports</h3>
+                        <div class="chart-container">
+                            <div style="position: relative; height: 300px;">
+                                <canvas id="productionReportChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="report-section">
+                        <h3>Equipment Utilization</h3>
+                        <div class="chart-container">
+                            <div style="position: relative; height: 300px;">
+                                <canvas id="equipmentUtilizationChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Audit Log Page -->
+            <div id="auditPage" class="page hidden">
+                <div class="page-header">
+                    <h2>Audit Log</h2>
+                    <div class="page-actions">
+                        <select id="auditFilter" class="form-control" style="width: 200px;" onchange="filterAuditLog()">
+                            <option value="all">All Actions</option>
+                            <option value="commit">Commits</option>
+                            <option value="branch">Branch Operations</option>
+                            <option value="merge">Merges</option>
+                            <option value="approval">Approvals</option>
+                            <option value="conflict">Conflict Resolution</option>
+                        </select>
+                        <button class="btn btn--outline" onclick="exportAuditLog()">Export Log</button>
+                    </div>
+                </div>
+                <div class="audit-container" id="auditContainer">
+                    <!-- Audit log will be generated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Settings Page -->
+            <div id="settingsPage" class="page hidden">
+                <h2>System Settings</h2>
+                <div class="settings-sections">
+                    <div class="settings-section">
+                        <h3>Company Information</h3>
+                        <div class="form-group">
+                            <label for="settingsCompanyName" class="form-label">Company Name</label>
+                            <input type="text" id="settingsCompanyName" class="form-control" value="PharmaCorp Manufacturing">
+                        </div>
+                        <div class="form-group">
+                            <label for="logoUpload" class="form-label">Company Logo</label>
+                            <input type="file" id="logoUpload" class="form-control" accept="image/*" onchange="uploadLogo(event)">
+                        </div>
+                        <button class="btn btn--primary" onclick="saveCompanySettings()">Save Changes</button>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <h3>Version Control Settings</h3>
+                        <div class="form-group">
+                            <label class="form-label">
+                                <input type="checkbox" id="autoCommitEnabled" onchange="updateVersionSettings()"> Enable Auto-commit (every 5 minutes)
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                <input type="checkbox" id="requireApprovalForCommits" onchange="updateVersionSettings()"> Require approval for all commits
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label for="autoCommitInterval" class="form-label">Auto-commit Interval (minutes)</label>
+                            <input type="number" id="autoCommitInterval" class="form-control" value="5" min="1" max="60" onchange="updateVersionSettings()">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Version Control Modals -->
+    
+    <!-- Commit Modal -->
+    <div id="commitModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>💾 Commit Changes</h2>
+                <button class="modal-close" onclick="closeCommitModal()">&times;</button>
+            </div>
+            <form id="commitForm">
+                <div class="form-group">
+                    <label for="commitMessage" class="form-label">Commit Message</label>
+                    <textarea id="commitMessage" class="form-control" rows="3" placeholder="Describe your changes..." required></textarea>
+                </div>
+                <div class="form-group" id="requireApprovalGroup">
+                    <label class="form-label">
+                        <input type="checkbox" id="requireApproval"> Require approval before merge
+                    </label>
+                </div>
+                <div class="commit-changes">
+                    <h4>Changed Files:</h4>
+                    <div id="changedFiles" class="changed-files-list"></div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn--outline" onclick="closeCommitModal()">Cancel</button>
+                    <button type="submit" class="btn btn--primary">💾 Commit Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Version History Modal -->
+    <div id="versionHistoryModal" class="modal hidden" style="max-width: 900px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📖 Version History</h2>
+                <button class="modal-close" onclick="closeVersionHistory()">&times;</button>
+            </div>
+            <div class="version-history-tabs">
+                <button class="tab-btn active" onclick="showVersionTab('commits')">Commits</button>
+                <button class="tab-btn" onclick="showVersionTab('pending')">Pending Approval</button>
+                <button class="tab-btn" onclick="showVersionTab('conflicts')">Conflicts</button>
+            </div>
+            <div id="commitsTab" class="version-tab">
+                <div class="version-filters">
+                    <select id="branchFilter" class="form-control" style="width: 150px;" onchange="filterVersionHistory()">
+                        <option value="all">All Branches</option>
+                    </select>
+                    <select id="authorFilter" class="form-control" style="width: 150px;" onchange="filterVersionHistory()">
+                        <option value="all">All Authors</option>
+                    </select>
+                    <button class="btn btn--outline btn--sm" onclick="compareVersions()">Compare Selected</button>
+                </div>
+                <div class="version-list" id="versionList">
+                    <!-- Version history will be populated here -->
+                </div>
+            </div>
+            <div id="pendingTab" class="version-tab hidden">
+                <div class="pending-list" id="pendingList">
+                    <!-- Pending approvals will be populated here -->
+                </div>
+            </div>
+            <div id="conflictsTab" class="version-tab hidden">
+                <div class="conflicts-list" id="conflictsList">
+                    <!-- Conflicts will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Branch Manager Modal -->
+    <div id="branchManagerModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🌿 Branch Management</h2>
+                <button class="modal-close" onclick="closeBranchManager()">&times;</button>
+            </div>
+            <div class="branch-actions">
+                <button class="btn btn--primary" onclick="createNewBranch()">Create Branch</button>
+                <button class="btn btn--outline" onclick="createMergeRequest()">Create Merge Request</button>
+            </div>
+            <div class="branches-list" id="branchesList">
+                <!-- Branches will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Branch Modal -->
+    <div id="createBranchModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🌿 Create New Branch</h2>
+                <button class="modal-close" onclick="closeCreateBranch()">&times;</button>
+            </div>
+            <form id="createBranchForm">
+                <div class="form-group">
+                    <label for="branchName" class="form-label">Branch Name</label>
+                    <input type="text" id="branchName" class="form-control" placeholder="feature/new-schedule" required>
+                </div>
+                <div class="form-group">
+                    <label for="parentBranch" class="form-label">Parent Branch</label>
+                    <select id="parentBranch" class="form-control" required>
+                        <!-- Options will be populated -->
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn--outline" onclick="closeCreateBranch()">Cancel</button>
+                    <button type="submit" class="btn btn--primary">Create Branch</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Merge Request Modal -->
+    <div id="mergeRequestModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🔀 Create Merge Request</h2>
+                <button class="modal-close" onclick="closeMergeRequest()">&times;</button>
+            </div>
+            <form id="mergeRequestForm">
+                <div class="form-group">
+                    <label for="sourceBranch" class="form-label">Source Branch</label>
+                    <select id="sourceBranch" class="form-control" required>
+                        <!-- Options will be populated -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="targetBranch" class="form-label">Target Branch</label>
+                    <select id="targetBranch" class="form-control" required>
+                        <!-- Options will be populated -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="mergeTitle" class="form-label">Merge Request Title</label>
+                    <input type="text" id="mergeTitle" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="mergeDescription" class="form-label">Description</label>
+                    <textarea id="mergeDescription" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="merge-diff" id="mergeDiff">
+                    <!-- Diff will be shown here -->
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn--outline" onclick="closeMergeRequest()">Cancel</button>
+                    <button type="submit" class="btn btn--primary">Create Merge Request</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Compare Versions Modal -->
+    <div id="compareVersionsModal" class="modal hidden" style="max-width: 1000px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🔍 Compare Versions</h2>
+                <button class="modal-close" onclick="closeCompareVersions()">&times;</button>
+            </div>
+            <div class="compare-info">
+                <div class="version-info-item">
+                    <strong>Version A:</strong> <span id="versionAInfo"></span>
+                </div>
+                <div class="version-info-item">
+                    <strong>Version B:</strong> <span id="versionBInfo"></span>
+                </div>
+            </div>
+            <div class="diff-container" id="diffContainer">
+                <!-- Diff will be rendered here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Conflict Resolution Modal -->
+    <div id="conflictResolutionModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>⚠️ Resolve Conflicts</h2>
+                <button class="modal-close" onclick="closeConflictResolution()">&times;</button>
+            </div>
+            <div class="conflict-resolution-container">
+                <div class="conflicts-to-resolve" id="conflictsToResolve">
+                    <!-- Conflicts will be listed here -->
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn--outline" onclick="closeConflictResolution()">Cancel</button>
+                    <button class="btn btn--warning" onclick="resolveAllConflicts()">Resolve All Conflicts</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Other existing modals -->
+    <div id="materialModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="materialModalTitle">Add Material</h2>
+                <button class="modal-close" onclick="closeMaterialModal()">&times;</button>
+            </div>
+            <form id="materialForm">
+                <div class="form-group">
+                    <label for="materialName" class="form-label">Material Name</label>
+                    <input type="text" id="materialName" class="form-control" required>
+                </div>
+                <div class="form-group" id="categoryGroup">
+                    <label for="materialCategory" class="form-label">Category</label>
+                    <select id="materialCategory" class="form-control">
+                        <option value="binder">Binder</option>
+                        <option value="disintegrant">Disintegrant</option>
+                        <option value="lubricant">Lubricant</option>
+                        <option value="coating">Coating</option>
+                        <option value="filler">Filler</option>
+                        <option value="glidant">Glidant</option>
+                        <option value="colorant">Colorant</option>
+                        <option value="flavoring">Flavoring Agent</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="materialStock" class="form-label">Current Stock</label>
+                    <input type="number" id="materialStock" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="materialReorderLevel" class="form-label">Reorder Level</label>
+                    <input type="number" id="materialReorderLevel" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="materialLeadTime" class="form-label">Lead Time (days)</label>
+                    <input type="number" id="materialLeadTime" class="form-control" value="30">
+                </div>
+                <button type="submit" class="btn btn--primary btn--full-width">Save Material</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Schedule Edit Modal -->
+    <div id="scheduleModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit Schedule</h2>
+                <button class="modal-close" onclick="closeScheduleModal()">&times;</button>
+            </div>
+            <form id="scheduleForm">
+                <div class="form-group">
+                    <label for="scheduleActivity" class="form-label">Activity</label>
+                    <select id="scheduleActivity" class="form-control" required>
+                        <option value="Production">Production</option>
+                        <option value="Maintenance">Maintenance</option>
+                        <option value="Cleaning">Cleaning</option>
+                    </select>
+                </div>
+                <div class="form-group" id="batchGroup">
+                    <label for="scheduleBatch" class="form-label">Batch Number</label>
+                    <input type="text" id="scheduleBatch" class="form-control">
+                </div>
+                <div class="form-group" id="productGroup">
+                    <label for="scheduleProduct" class="form-label">Product</label>
+                    <input type="text" id="scheduleProduct" class="form-control">
+                </div>
+                <button type="submit" class="btn btn--primary btn--full-width">Save Schedule</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Import Data Modal -->
+    <div id="importModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📥 Import Data</h2>
+                <button class="modal-close" onclick="closeImportModal()">&times;</button>
+            </div>
+            <form id="importForm">
+                <div class="form-group">
+                    <label for="importFile" class="form-label">Select File (JSON or CSV)</label>
+                    <input type="file" id="importFile" class="form-control" accept=".json,.csv" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Import Mode</label>
+                    <div class="import-options">
+                        <label class="form-label">
+                            <input type="radio" name="importMode" value="merge" checked> Merge with existing data
+                        </label>
+                        <label class="form-label">
+                            <input type="radio" name="importMode" value="replace"> Replace existing data
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">
+                        <input type="checkbox" id="createBackup" checked> Create backup before import
+                    </label>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn--outline" onclick="closeImportModal()">Cancel</button>
+                    <button type="submit" class="btn btn--primary">Import Data</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Hidden file input for import -->
+    <input type="file" id="importFileInput" style="display: none;" onchange="handleImportFile(event)">
+
+    <!-- Watermark -->
+    <div class="watermark">@GK</div>
+
+    <!-- Third-party Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/uuid@latest/dist/umd/uuidv4.min.js"></script>
+    <script src="https://unpkg.com/idb-keyval@latest/dist/umd.js"></script>
+    <script src="https://unpkg.com/diff@latest/dist/diff.min.js"></script>
+    <script src="https://unpkg.com/dayjs@latest/dayjs.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
